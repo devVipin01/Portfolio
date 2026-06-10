@@ -1,3 +1,3 @@
 # Vipin Kumar — Portfolio Website
 
-Go to[ https://devvipin01.github.io/Portfolio/
+Go to - https://devvipin01.github.io/Portfolio/
