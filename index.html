@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vipin Kumar — Lead CV & AI Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ── TOKENS ───────────────────────────────────────────────── */
+:root {
+  --bg-deep:    #080D1A;
+  --bg-card:    #101624;
+  --bg-surface: #181F30;
+  --indigo:     #5B5EF4;
+  --indigo-lt:  #7C7FF8;
+  --cyan:       #00D4B8;
+  --amber:      #F59E0B;
+  --white:      #F0F4FF;
+  --muted:      #8896B0;
+  --border:     #1A2540;
+  --danger:     #F43F5E;
+  --success:    #10B981;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body:    'Inter', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+  --radius:    12px;
+  --radius-lg: 20px;
+  --shadow:    0 4px 32px rgba(0,0,0,.55);
+}
+
+/* ── RESET ────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg-deep);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+img, video { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: var(--font-body); }
+
+/* ── SCROLLBAR ────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+/* ── AMBIENT BACKGROUND (no grid) ────────────────────────── */
+#ambient-bg {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  overflow: hidden;
+}
+#ambient-bg canvas {
+  width: 100%; height: 100%;
+}
+
+/* ── NAV ──────────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5vw; height: 64px;
+  background: rgba(8,13,26,.82);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.15rem;
+  letter-spacing: -.03em;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-links { display: flex; gap: 32px; }
+.nav-links a {
+  font-size: .82rem; font-weight: 500; color: var(--muted);
+  letter-spacing: .05em; text-transform: uppercase; transition: color .2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a.active { color: var(--cyan); }
+
+/* ── HERO ─────────────────────────────────────────────────── */
+#hero {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 96px 5vw 64px;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,212,184,.08);
+  border: 1px solid rgba(0,212,184,.25);
+  border-radius: 99px;
+  padding: 6px 18px; margin-bottom: 32px;
+  font-size: .75rem; font-weight: 600;
+  color: var(--cyan); letter-spacing: .08em; text-transform: uppercase;
+}
+.hero-badge::before {
+  content: ''; width: 7px; height: 7px;
+  background: var(--cyan); border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.8)} }
+
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 9vw, 7rem);
+  font-weight: 700; line-height: 1;
+  letter-spacing: -.04em;
+  margin-bottom: 20px;
+}
+.hero-name .first { color: var(--white); }
+.hero-name .last {
+  color: transparent;
+  background: linear-gradient(135deg, var(--indigo) 0%, var(--cyan) 100%);
+  -webkit-background-clip: text; background-clip: text;
+}
+
+.hero-role {
+  font-family: var(--font-mono); font-size: clamp(.85rem, 2vw, 1.15rem);
+  color: var(--muted); margin-bottom: 36px; min-height: 2em;
+}
+.hero-role .cursor { color: var(--cyan); animation: blink .9s step-end infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.hero-desc {
+  max-width: 560px; color: var(--muted); font-size: .95rem;
+  line-height: 1.85; margin-bottom: 44px;
+}
+.hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px; border-radius: var(--radius);
+  font-weight: 600; font-size: .88rem; border: none; transition: all .22s;
+}
+.btn-primary {
+  background: var(--indigo); color: var(--white);
+  box-shadow: 0 0 28px rgba(91,94,244,.38);
+}
+.btn-primary:hover { background: var(--indigo-lt); transform: translateY(-2px); box-shadow: 0 0 40px rgba(91,94,244,.55); }
+.btn-ghost {
+  background: transparent; color: var(--white);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { border-color: var(--indigo); color: var(--indigo-lt); transform: translateY(-2px); }
+
+.hero-stats {
+  display: flex; gap: 52px; margin-top: 72px;
+  padding-top: 40px; border-top: 1px solid var(--border);
+}
+.stat-val {
+  font-family: var(--font-display); font-size: 2.3rem; font-weight: 700;
+  color: var(--white); line-height: 1;
+}
+.stat-val span { color: var(--cyan); }
+.stat-lbl { font-size: .75rem; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: .07em; }
+
+/* ── SECTION SHELL ────────────────────────────────────────── */
+section { position: relative; z-index: 1; padding: 100px 5vw; }
+.section-header { margin-bottom: 56px; }
+.section-eyebrow {
+  font-size: .72rem; font-weight: 600; color: var(--cyan);
+  letter-spacing: .14em; text-transform: uppercase; margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700; letter-spacing: -.03em; line-height: 1.1;
+}
+.section-title em { color: var(--indigo-lt); font-style: normal; }
+.section-sub { color: var(--muted); margin-top: 12px; max-width: 480px; }
+
+/* ── ABOUT ────────────────────────────────────────────────── */
+#about {
+  background: linear-gradient(180deg, transparent, rgba(16,22,36,.7), transparent);
+}
+.about-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; align-items: center; }
+.about-photo-wrap { position: relative; aspect-ratio: 4/5; max-width: 320px; }
+.about-photo-placeholder {
+  width: 100%; height: 100%;
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px; color: var(--muted); cursor: pointer;
+  transition: border-color .2s;
+  overflow: hidden;
+}
+.about-photo-placeholder:hover { border-color: var(--indigo); }
+.about-photo-placeholder svg { width: 40px; height: 40px; opacity: .4; }
+.about-photo-placeholder span { font-size: .8rem; }
+#aboutPhotoImg { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg); display: none; position: absolute; inset: 0; }
+.about-deco {
+  position: absolute; bottom: -16px; right: -16px;
+  width: 100px; height: 100px;
+  background: linear-gradient(135deg, var(--indigo), var(--cyan));
+  border-radius: var(--radius-lg); opacity: .12; z-index: -1;
+}
+
+/* Experience timeline inside about */
+.exp-list { margin-top: 28px; display: flex; flex-direction: column; gap: 16px; }
+.exp-item {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 16px 18px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color .2s;
+}
+.exp-item:hover { border-color: rgba(91,94,244,.35); }
+.exp-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--cyan); flex-shrink: 0; margin-top: 6px;
+}
+.exp-co { font-weight: 600; font-size: .9rem; }
+.exp-role { font-size: .8rem; color: var(--muted); }
+.exp-period { font-family: var(--font-mono); font-size: .7rem; color: var(--indigo-lt); margin-top: 3px; }
+
+.about-text h3 {
+  font-family: var(--font-display); font-size: 1.5rem; font-weight: 700;
+  margin-bottom: 16px;
+}
+.about-text p { color: var(--muted); margin-bottom: 14px; }
+.about-text p strong { color: var(--white); }
+.skills-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.chip {
+  background: rgba(91,94,244,.1); border: 1px solid rgba(91,94,244,.22);
+  color: var(--indigo-lt); border-radius: 99px;
+  padding: 5px 14px; font-size: .76rem; font-weight: 500;
+  font-family: var(--font-mono);
+}
+
+/* ── PROJECTS ─────────────────────────────────────────────── */
+.projects-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 36px; flex-wrap: wrap; gap: 16px;
+}
+.filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.filter-tab {
+  padding: 7px 18px; border-radius: 99px; font-size: .8rem; font-weight: 500;
+  border: 1px solid var(--border); background: transparent; color: var(--muted);
+  transition: all .2s;
+}
+.filter-tab:hover { border-color: var(--indigo); color: var(--white); }
+.filter-tab.active { background: var(--indigo); border-color: var(--indigo); color: var(--white); }
+.btn-add {
+  background: linear-gradient(135deg, var(--indigo), var(--cyan));
+  color: var(--white); border: none; padding: 10px 22px;
+  border-radius: var(--radius); font-weight: 600; font-size: .85rem;
+  display: flex; align-items: center; gap: 8px; transition: opacity .2s, transform .2s;
+}
+.btn-add:hover { opacity: .85; transform: translateY(-1px); }
+
+.projects-list { display: flex; flex-direction: column; gap: 28px; }
+
+/* Project card — horizontal for professional feel */
+.project-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform .25s, border-color .25s, box-shadow .25s;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+}
+.project-card:hover { transform: translateY(-3px); border-color: rgba(91,94,244,.4); box-shadow: 0 16px 48px rgba(0,0,0,.45); }
+
+.project-media {
+  position: relative;
+  background: var(--bg-surface);
+  overflow: hidden; min-height: 200px;
+}
+.project-media img, .project-media video {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .4s;
+}
+.project-card:hover .project-media img,
+.project-card:hover .project-media video { transform: scale(1.05); }
+.project-media-placeholder {
+  width: 100%; height: 100%; min-height: 200px;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 10px;
+  background: linear-gradient(135deg, rgba(91,94,244,.07), rgba(0,212,184,.04));
+  color: var(--border);
+}
+.project-media-placeholder svg { width: 40px; height: 40px; }
+.project-media-placeholder span { font-size: .72rem; color: var(--muted); }
+
+.project-body { padding: 24px 28px; display: flex; flex-direction: column; }
+.project-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.tag {
+  font-size: .68rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 99px;
+  background: rgba(0,212,184,.08); color: var(--cyan); border: 1px solid rgba(0,212,184,.18);
+}
+.tag.ml  { background: rgba(91,94,244,.1); color: var(--indigo-lt); border-color: rgba(91,94,244,.2); }
+.tag.cv  { background: rgba(16,185,129,.1); color: #34D399; border-color: rgba(16,185,129,.2); }
+.tag.web { background: rgba(245,158,11,.08); color: #FCD34D; border-color: rgba(245,158,11,.2); }
+.tag.other { background: rgba(244,63,94,.08); color: #FB7185; border-color: rgba(244,63,94,.2); }
+
+.project-title {
+  font-family: var(--font-display); font-size: 1.1rem; font-weight: 700;
+  margin-bottom: 10px; line-height: 1.3;
+}
+.project-desc { color: var(--muted); font-size: .85rem; line-height: 1.7; flex: 1; }
+.project-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border);
+}
+.project-links { display: flex; gap: 14px; }
+.project-link {
+  display: flex; align-items: center; gap: 5px;
+  font-size: .78rem; color: var(--muted); font-weight: 500;
+  transition: color .2s;
+}
+.project-link:hover { color: var(--cyan); }
+.project-link svg { width: 14px; height: 14px; }
+.project-actions { display: flex; gap: 8px; }
+.icon-btn {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); transition: all .2s;
+}
+.icon-btn:hover { border-color: var(--indigo); color: var(--indigo-lt); }
+.icon-btn.del:hover { border-color: var(--danger); color: var(--danger); }
+.icon-btn svg { width: 13px; height: 13px; }
+
+/* media strip */
+.media-strip { display: flex; gap: 6px; padding: 0 28px 16px; overflow-x: auto; }
+.media-thumb {
+  width: 54px; height: 38px; border-radius: 6px; overflow: hidden; flex-shrink: 0;
+  border: 1px solid var(--border); cursor: pointer; transition: border-color .2s;
+}
+.media-thumb:hover { border-color: var(--cyan); }
+.media-thumb img, .media-thumb video { width: 100%; height: 100%; object-fit: cover; }
+.media-strip::-webkit-scrollbar { height: 3px; }
+
+/* ── ACTIVITIES ───────────────────────────────────────────── */
+#activities {
+  background: linear-gradient(180deg, transparent, rgba(16,22,36,.6), transparent);
+}
+.activities-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px;
+}
+.activity-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 22px 24px;
+  display: flex; gap: 16px; align-items: flex-start;
+  transition: transform .25s, border-color .25s;
+}
+.activity-card:hover { transform: translateY(-3px); border-color: rgba(91,94,244,.35); }
+.activity-icon {
+  width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 1.25rem;
+}
+.activity-icon.hackathon { background: rgba(245,158,11,.1); }
+.activity-icon.kaggle    { background: rgba(0,212,184,.1); }
+.activity-icon.cert      { background: rgba(16,185,129,.1); }
+.activity-icon.award     { background: rgba(91,94,244,.1); }
+.activity-icon.other     { background: rgba(244,63,94,.1); }
+.activity-meta { flex: 1; min-width: 0; }
+.activity-type {
+  font-size: .68rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 4px;
+}
+.activity-title { font-family: var(--font-display); font-weight: 600; font-size: .92rem; margin-bottom: 3px; line-height: 1.3; }
+.activity-org { font-size: .8rem; color: var(--muted); }
+.activity-date { font-family: var(--font-mono); font-size: .7rem; color: var(--indigo-lt); margin-top: 7px; }
+.activity-result { font-size: .78rem; color: var(--success); margin-top: 5px; font-weight: 600; }
+.activity-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+.btn-add-activity {
+  margin-top: 24px;
+  background: transparent; border: 1.5px dashed var(--border); color: var(--muted);
+  padding: 14px 28px; border-radius: var(--radius); font-size: .85rem; font-weight: 500;
+  width: 100%; transition: all .2s;
+}
+.btn-add-activity:hover { border-color: var(--indigo); color: var(--indigo-lt); background: rgba(91,94,244,.04); }
+
+/* ── CONTACT ──────────────────────────────────────────────── */
+#contact {
+  text-align: center;
+  background: linear-gradient(135deg, rgba(91,94,244,.04) 0%, rgba(0,212,184,.02) 100%);
+}
+.contact-card {
+  max-width: 620px; margin: 0 auto;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 56px 48px;
+}
+.contact-card h3 {
+  font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; margin-bottom: 12px;
+}
+.contact-card > p { color: var(--muted); margin-bottom: 36px; }
+.contact-links { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.contact-link {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  padding: 12px 22px; border-radius: var(--radius);
+  font-weight: 500; font-size: .86rem; transition: all .2s;
+}
+.contact-link:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+.contact-link svg { width: 17px; height: 17px; }
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+footer {
+  position: relative; z-index: 1;
+  text-align: center; padding: 28px;
+  border-top: 1px solid var(--border);
+  color: var(--muted); font-size: .78rem;
+}
+footer span { color: var(--indigo-lt); }
+
+/* ── MODAL SYSTEM ─────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,.78); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none; transition: opacity .25s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 36px;
+  width: 100%; max-width: 660px; max-height: 90vh;
+  overflow-y: auto; transform: translateY(20px); transition: transform .3s;
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+.modal-title { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; }
+.modal-close {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; color: var(--muted);
+  transition: all .2s;
+}
+.modal-close:hover { border-color: var(--danger); color: var(--danger); }
+
+/* ── FORM ELEMENTS ────────────────────────────────────────── */
+.form-group { margin-bottom: 20px; }
+.form-label { display: block; font-size: .79rem; font-weight: 600; color: var(--muted); margin-bottom: 7px; letter-spacing: .05em; text-transform: uppercase; }
+.form-input, .form-textarea, .form-select {
+  width: 100%; background: var(--bg-surface);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  color: var(--white); padding: 11px 14px;
+  font-family: var(--font-body); font-size: .9rem;
+  transition: border-color .2s; outline: none;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--indigo); }
+.form-textarea { resize: vertical; min-height: 90px; }
+.form-select option { background: var(--bg-card); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 28px; }
+.btn-save {
+  background: var(--indigo); color: var(--white); border: none;
+  padding: 11px 28px; border-radius: var(--radius);
+  font-weight: 600; font-size: .88rem; transition: all .2s;
+}
+.btn-save:hover { background: var(--indigo-lt); transform: translateY(-1px); }
+.btn-cancel {
+  background: transparent; border: 1px solid var(--border); color: var(--muted);
+  padding: 11px 20px; border-radius: var(--radius);
+  font-weight: 500; font-size: .88rem; transition: all .2s;
+}
+.btn-cancel:hover { border-color: var(--white); color: var(--white); }
+
+/* ── MEDIA UPLOAD ZONE ────────────────────────────────────── */
+.upload-zone {
+  border: 2px dashed var(--border); border-radius: var(--radius);
+  padding: 28px; text-align: center; cursor: pointer;
+  transition: all .2s; color: var(--muted);
+}
+.upload-zone:hover, .upload-zone.drag { border-color: var(--indigo); color: var(--indigo-lt); background: rgba(91,94,244,.04); }
+.upload-zone svg { width: 28px; height: 28px; margin: 0 auto 8px; display: block; }
+.upload-zone p { font-size: .82rem; }
+.upload-zone small { font-size: .71rem; opacity: .6; }
+.media-previews { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.media-preview-item {
+  position: relative; width: 80px; height: 60px;
+  border-radius: 8px; overflow: hidden; border: 1px solid var(--border);
+}
+.media-preview-item img, .media-preview-item video { width: 100%; height: 100%; object-fit: cover; }
+.media-remove {
+  position: absolute; top: 3px; right: 3px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(0,0,0,.7); border: none; color: var(--white);
+  font-size: .65rem; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .2s;
+}
+.media-remove:hover { background: var(--danger); }
+
+/* GitHub path hint */
+.github-hint {
+  background: rgba(0,212,184,.06);
+  border: 1px solid rgba(0,212,184,.15);
+  border-radius: 8px; padding: 12px 14px;
+  font-size: .78rem; color: var(--cyan);
+  margin-top: 10px; font-family: var(--font-mono);
+  line-height: 1.6;
+}
+.github-hint strong { color: var(--white); font-family: var(--font-body); }
+
+/* ── LIGHTBOX ─────────────────────────────────────────────── */
+#lightbox {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,.94); display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .25s;
+}
+#lightbox.open { opacity: 1; pointer-events: all; }
+#lightbox img, #lightbox video { max-width: 90vw; max-height: 88vh; border-radius: var(--radius); }
+.lb-close {
+  position: absolute; top: 20px; right: 24px;
+  font-size: 2rem; color: var(--white); opacity: .6; cursor: pointer;
+  transition: opacity .2s; line-height: 1;
+}
+.lb-close:hover { opacity: 1; }
+
+/* ── TOAST ────────────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 28px; right: 28px; z-index: 400;
+  background: var(--bg-surface); border: 1px solid var(--indigo);
+  border-radius: var(--radius); padding: 14px 20px;
+  font-size: .86rem; display: flex; align-items: center; gap: 10px;
+  box-shadow: var(--shadow); transform: translateY(80px);
+  transition: transform .3s; max-width: 320px;
+}
+.toast.show { transform: translateY(0); }
+.toast .dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; flex-shrink: 0; }
+
+/* ── EMPTY STATES ─────────────────────────────────────────── */
+.empty-state {
+  text-align: center; padding: 80px 24px;
+  color: var(--muted); grid-column: 1 / -1;
+}
+.empty-state svg { width: 48px; height: 48px; margin: 0 auto 16px; opacity: .3; display: block; }
+.empty-state p { font-size: .9rem; }
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .project-card { grid-template-columns: 1fr; }
+  .project-media { min-height: 200px; aspect-ratio: 16/9; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .about-grid { grid-template-columns: 1fr; }
+  .about-photo-wrap { max-width: 220px; margin: 0 auto; }
+  .form-row { grid-template-columns: 1fr; }
+  .hero-stats { gap: 28px; }
+  .contact-card { padding: 36px 22px; }
+  .modal { padding: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- AMBIENT BACKGROUND -->
+<div id="ambient-bg"><canvas id="bgCanvas"></canvas></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" id="navName">V<span>.</span>Kumar</div>
+  <div class="nav-links">
+    <a href="#hero" class="active" data-section="hero">Home</a>
+    <a href="#about" data-section="about">About</a>
+    <a href="#projects" data-section="projects">Projects</a>
+    <a href="#activities" data-section="activities">Activities</a>
+    <a href="#contact" data-section="contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-badge" id="heroBadge">Open to opportunities</div>
+  <h1 class="hero-name">
+    <span class="first" id="heroFirstName">Vipin</span>
+    <br>
+    <span class="last" id="heroLastName">Kumar</span>
+  </h1>
+  <p class="hero-role"><span id="typeText"></span><span class="cursor">|</span></p>
+  <p class="hero-desc" id="heroDesc">Lead CV Engineer building production-grade AI inspection systems. From real-time CCTV monitoring to X-ray defect detection — turning industrial challenges into intelligent solutions.</p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn btn-primary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+      View Projects
+    </a>
+    <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-val" id="statProjects">0<span>+</span></div>
+      <div class="stat-lbl">Projects</div>
+    </div>
+    <div>
+      <div class="stat-val"><span id="statExp">3</span><span>+</span></div>
+      <div class="stat-lbl">Years Exp.</div>
+    </div>
+    <div>
+      <div class="stat-val">99<span>%</span></div>
+      <div class="stat-lbl">Best Accuracy</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-photo-wrap">
+      <div class="about-photo-placeholder" id="photoPlaceholder" onclick="triggerPhotoUpload()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Click to add photo</span>
+      </div>
+      <img id="aboutPhotoImg" alt="Vipin Kumar" />
+      <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)" />
+      <div class="about-deco"></div>
+    </div>
+    <div class="about-text">
+      <div class="section-eyebrow">About Me</div>
+      <h3 id="aboutHeadline">Lead Computer Vision & AI Engineer</h3>
+      <p id="aboutPara1">I build end-to-end AI vision systems for industrial quality control — from architecture design to edge deployment. My systems run 24/7 on production floors at companies like Denso, Lenskart, and Indian Oil.</p>
+      <p id="aboutPara2">Currently leading CV engineering at <strong id="aboutFocus">Add Innovations</strong>, specializing in anomaly detection, defect segmentation, real-time OCR, and TensorRT-optimized inference pipelines on Nvidia Jetson hardware.</p>
+      <div class="skills-chips" id="skillsChips"></div>
+      <div class="exp-list">
+        <div class="exp-item">
+          <div class="exp-dot"></div>
+          <div>
+            <div class="exp-co">Add Innovations</div>
+            <div class="exp-role">Lead Computer Vision Engineer</div>
+            <div class="exp-period">Oct 2022 – Present</div>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-dot" style="background:var(--indigo-lt)"></div>
+          <div>
+            <div class="exp-co">Culinda Inc.</div>
+            <div class="exp-role">Data Scientist</div>
+            <div class="exp-period">Apr 2022 – Oct 2022</div>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-dot" style="background:var(--muted)"></div>
+          <div>
+            <div class="exp-co">BlobCity Inc.</div>
+            <div class="exp-role">AI Intern — AutoML Framework</div>
+            <div class="exp-period">Jan 2022 – Apr 2022</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:24px;">
+        <button class="btn btn-ghost" onclick="openAboutModal()" style="font-size:.82rem; padding:9px 18px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          Edit Profile
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="projects-toolbar">
+    <div>
+      <div class="section-eyebrow">Portfolio</div>
+      <h2 class="section-title">Featured <em>Projects</em></h2>
+    </div>
+    <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-tab active" data-filter="all">All</button>
+      </div>
+      <button class="btn-add" onclick="openProjectModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M12 5v14m-7-7h14"/></svg>
+        Add Project
+      </button>
+    </div>
+  </div>
+  <div class="projects-list" id="projectsGrid"></div>
+</section>
+
+<!-- ACTIVITIES -->
+<section id="activities">
+  <div class="section-header">
+    <div class="section-eyebrow">Beyond Work</div>
+    <h2 class="section-title">Extra <em>Activities</em></h2>
+    <p class="section-sub">Hackathons, Kaggle competitions, certifications, and recognition.</p>
+  </div>
+  <div class="activities-grid" id="activitiesGrid"></div>
+  <button class="btn-add-activity" onclick="openActivityModal()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="display:inline;vertical-align:middle;margin-right:6px;"><path d="M12 5v14m-7-7h14"/></svg>
+    Add Activity
+  </button>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-card">
+    <h3>Let's Build Something</h3>
+    <p>Open to new roles, collaborations, and challenging computer vision problems.</p>
+    <div class="contact-links" id="contactLinks">
+      <a class="contact-link" href="mailto:748vipinkumar@gmail.com" id="emailLink">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+        Email
+      </a>
+      <a class="contact-link" href="https://github.com/" id="githubLink" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a class="contact-link" href="https://linkedin.com/" id="linkedinLink" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a class="contact-link" href="https://www.kaggle.com/" id="kaggleLink" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v4.860c0 .274-.137.412-.411.412H5.5c-.274 0-.411-.138-.411-.412V.588C5.089.196 5.226.059 5.5.059h2.376c.274 0 .411.137.411.529v13.300l6.07-5.893c.162-.162.324-.242.489-.242h3.234c.161 0 .268.054.316.161.049.108.032.222-.054.342l-6.428 6.184 6.749 8.520c.086.121.109.236.162.099z"/></svg>
+        Kaggle
+      </a>
+    </div>
+    <div style="margin-top:20px;">
+      <button class="btn btn-ghost" onclick="openContactModal()" style="font-size:.8rem; padding:8px 16px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        Edit Contact Info
+      </button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Built with <span>♥</span> by <span id="footerName">Vipin Kumar</span> · Hosted on GitHub Pages</p>
+</footer>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLightbox()">
+  <span class="lb-close">✕</span>
+  <div id="lightboxContent"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="dot"></div>
+  <span id="toastMsg">Saved!</span>
+</div>
+
+<!-- ── PROJECT MODAL ──────────────────────────────────────────── -->
+<div class="modal-overlay" id="projectModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="projectModalTitle">New Project</h2>
+      <button class="modal-close" onclick="closeModal('projectModal')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Project Title *</label>
+      <input class="form-input" id="pTitle" placeholder="e.g. Real-time Defect Detection Pipeline" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description *</label>
+      <textarea class="form-textarea" id="pDesc" placeholder="What does this project do? What problem does it solve? Key metrics / accuracy?"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select class="form-select" id="pCategory">
+          <option value="cv">Computer Vision</option>
+          <option value="ml">Machine Learning</option>
+          <option value="web">Web / App</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-select" id="pStatus">
+          <option value="completed">Completed</option>
+          <option value="active">In Progress</option>
+          <option value="archived">Archived</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">GitHub URL</label>
+        <input class="form-input" id="pGithub" placeholder="https://github.com/..." />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Demo / Live URL</label>
+        <input class="form-input" id="pDemo" placeholder="https://..." />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tags (comma separated)</label>
+      <input class="form-input" id="pTags" placeholder="e.g. YOLOv8, TensorRT, PyTorch, OpenCV" />
+    </div>
+
+    <!-- GitHub image path option -->
+    <div class="form-group">
+      <label class="form-label">GitHub Media Paths (one per line)</label>
+      <textarea class="form-textarea" id="pGithubPaths" style="min-height:70px;" placeholder="assets/projects/denso/demo.mp4&#10;assets/projects/denso/result.jpg"></textarea>
+      <div class="github-hint">
+        <strong>Hosting tip:</strong> Upload images/videos to your repo under <code>assets/projects/your-project/</code> and enter relative paths above. They'll display automatically when hosted on GitHub Pages at <code>https://username.github.io/portfolio/</code>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Upload Media Locally (Images & Videos)</label>
+      <div class="upload-zone" id="uploadZone"
+        ondragover="event.preventDefault(); this.classList.add('drag')"
+        ondragleave="this.classList.remove('drag')"
+        ondrop="handleMediaDrop(event)"
+        onclick="document.getElementById('mediaInput').click()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <p>Drop images or videos here, or click to browse</p>
+        <small>JPG, PNG, GIF, MP4, WebM — stored in browser localStorage</small>
+      </div>
+      <input type="file" id="mediaInput" accept="image/*,video/*" multiple style="display:none" onchange="handleMediaSelect(event)" />
+      <div class="media-previews" id="mediaPreviews"></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="closeModal('projectModal')">Cancel</button>
+      <button class="btn-save" onclick="saveProject()">Save Project</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── ACTIVITY MODAL ─────────────────────────────────────────── -->
+<div class="modal-overlay" id="activityModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="activityModalTitle">Add Activity</h2>
+      <button class="modal-close" onclick="closeModal('activityModal')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Activity Title *</label>
+      <input class="form-input" id="aTitle" placeholder="e.g. Smart India Hackathon 2022" />
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Type</label>
+        <select class="form-select" id="aType">
+          <option value="hackathon">Hackathon</option>
+          <option value="kaggle">Kaggle</option>
+          <option value="cert">Certification</option>
+          <option value="award">Award / Recognition</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input class="form-input" id="aDate" type="month" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Organizer / Platform</label>
+      <input class="form-input" id="aOrg" placeholder="e.g. AICTE, Kaggle, Coursera" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Result / Achievement</label>
+      <input class="form-input" id="aResult" placeholder="e.g. 1st Place, Silver Medal, Top 400 Globally" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Link (optional)</label>
+      <input class="form-input" id="aLink" placeholder="https://..." />
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="closeModal('activityModal')">Cancel</button>
+      <button class="btn-save" onclick="saveActivity()">Save Activity</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── ABOUT EDIT MODAL ───────────────────────────────────────── -->
+<div class="modal-overlay" id="aboutModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Edit Profile</h2>
+      <button class="modal-close" onclick="closeModal('aboutModal')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">First Name</label>
+        <input class="form-input" id="editFirstName" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Last Name</label>
+        <input class="form-input" id="editLastName" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Role / Tagline</label>
+      <input class="form-input" id="editRole" placeholder="e.g. Lead CV Engineer · AI Systems" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Hero Description</label>
+      <textarea class="form-textarea" id="editDesc"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">About Headline</label>
+      <input class="form-input" id="editAboutHeadline" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">About Paragraph 1</label>
+      <textarea class="form-textarea" id="editAboutP1" style="min-height:70px;"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">About Paragraph 2</label>
+      <textarea class="form-textarea" id="editAboutP2" style="min-height:70px;"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Skills (comma separated)</label>
+      <input class="form-input" id="editSkills" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Years of Experience</label>
+      <input class="form-input" id="editExp" type="number" min="0" max="40" />
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="closeModal('aboutModal')">Cancel</button>
+      <button class="btn-save" onclick="saveAbout()">Save Profile</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONTACT EDIT MODAL ─────────────────────────────────────── -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Edit Contact Info</h2>
+      <button class="modal-close" onclick="closeModal('contactModal')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" id="cEmail" type="email" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">GitHub URL</label>
+      <input class="form-input" id="cGithub" placeholder="https://github.com/username" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">LinkedIn URL</label>
+      <input class="form-input" id="cLinkedin" placeholder="https://linkedin.com/in/username" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Kaggle URL</label>
+      <input class="form-input" id="cKaggle" placeholder="https://kaggle.com/username" />
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="closeModal('contactModal')">Cancel</button>
+      <button class="btn-save" onclick="saveContact()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── APP SCRIPT ─────────────────────────────────────────────── -->
+<script>
+/* ─── AMBIENT CANVAS BACKGROUND ────────────────────────────── */
+(function() {
+  const canvas = document.getElementById('bgCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, orbs = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function initOrbs() {
+    orbs = [];
+    const N = Math.floor((W * H) / 180000) + 4;
+    for (let i = 0; i < N; i++) {
+      orbs.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: 120 + Math.random() * 220,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: (Math.random() - 0.5) * 0.15,
+        hue: Math.random() < 0.5 ? 240 : 175,   /* indigo or cyan */
+        alpha: 0.03 + Math.random() * 0.045,
+      });
+    }
+  }
+
+  function drawOrbs() {
+    ctx.clearRect(0, 0, W, H);
+    orbs.forEach(o => {
+      const g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
+      g.addColorStop(0, `hsla(${o.hue},80%,60%,${o.alpha})`);
+      g.addColorStop(1, `hsla(${o.hue},80%,60%,0)`);
+      ctx.beginPath();
+      ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
+      ctx.fillStyle = g;
+      ctx.fill();
+
+      o.x += o.vx; o.y += o.vy;
+      if (o.x < -o.r) o.x = W + o.r;
+      if (o.x > W + o.r) o.x = -o.r;
+      if (o.y < -o.r) o.y = H + o.r;
+      if (o.y > H + o.r) o.y = -o.r;
+    });
+    requestAnimationFrame(drawOrbs);
+  }
+
+  window.addEventListener('resize', () => { resize(); initOrbs(); });
+  resize(); initOrbs(); drawOrbs();
+})();
+
+/* ─── STATE ─────────────────────────────────────────────────── */
+let state = {
+  profile: {
+    firstName: 'Vipin', lastName: 'Kumar',
+    role: 'Lead CV Engineer · AI Systems',
+    desc: 'Lead CV Engineer building production-grade AI inspection systems. From real-time CCTV monitoring to X-ray defect detection — turning industrial challenges into intelligent solutions.',
+    aboutHeadline: 'Lead Computer Vision & AI Engineer',
+    aboutP1: 'I build end-to-end AI vision systems for industrial quality control — from architecture design to edge deployment. My systems run 24/7 on production floors at companies like Denso, Lenskart, and Indian Oil.',
+    aboutP2: 'Currently leading CV engineering at Add Innovations, specializing in anomaly detection, defect segmentation, real-time OCR, and TensorRT-optimized inference pipelines on Nvidia Jetson hardware.',
+    skills: ['Python','PyTorch','YOLOv8','TensorRT','OpenCV','FastAPI','PaddleOCR','Nvidia Jetson','FLIR / Baumer','SQL','TensorFlow','Keras'],
+    exp: 3, photo: null,
+  },
+  contact: {
+    email: '748vipinkumar@gmail.com',
+    github: 'https://github.com/',
+    linkedin: 'https://linkedin.com/',
+    kaggle: 'https://kaggle.com/',
+  },
+  projects: [
+    {
+      id: 1,
+      title: 'Real-Time AI Safety Monitoring — Denso',
+      desc: 'Deployed a live monitoring system processing 5 CCTV feeds simultaneously, detecting human presence and rule violations with 99.13% accuracy at 10 FPS. Integrated alarm triggering and rule-based violation logic.',
+      category: 'cv', status: 'completed',
+      tags: ['YOLOv8','OpenCV','FastAPI','CCTV','Real-Time'],
+      github: '', demo: '',
+      githubPaths: [],
+      media: [],
+    },
+    {
+      id: 2,
+      title: 'Fabric Anomaly Detection — YKK Tape Inspection',
+      desc: 'High-performance anomaly detection for fabric quality inspection achieving 99% accuracy. Outperformed PaDiM and PatchCore baselines in both accuracy and inference speed using model quantization.',
+      category: 'cv', status: 'completed',
+      tags: ['Anomaly Detection','TensorRT','Model Quantization','PatchCore'],
+      github: '', demo: '',
+      githubPaths: [],
+      media: [],
+    },
+    {
+      id: 3,
+      title: 'Automated Eyewear Inspection — Lenskart',
+      desc: 'Combined YOLOv8 + PaddleOCR for curved/irregular text recognition on eyewear frames. Included OpenCV symmetry checks for temples & rims and deep learning–based dent detection.',
+      category: 'cv', status: 'completed',
+      tags: ['YOLOv8','PaddleOCR','OpenCV','Deep Learning'],
+      github: '', demo: '',
+      githubPaths: [],
+      media: [],
+    },
+    {
+      id: 4,
+      title: 'X-Ray Defect Pipeline — Munitions India Limited',
+      desc: 'Multi-defect segmentation and measurement on noisy X-ray imagery. Includes defect size measurement and OCR-based serial number extraction for military-grade inspection.',
+      category: 'cv', status: 'completed',
+      tags: ['Segmentation','OCR','X-Ray','Defect Detection'],
+      github: '', demo: '',
+      githubPaths: [],
+      media: [],
+    },
+    {
+      id: 5,
+      title: 'Tare Weight Detection — Indian Oil',
+      desc: 'Two-stage multi-model OCR pipeline for reading tare weight from cylinders, robust to rotation, dirt, and damaged paint. Achieved 98.2% accuracy in field conditions.',
+      category: 'cv', status: 'completed',
+      tags: ['OCR','TensorRT','Multi-Model','Industrial'],
+      github: '', demo: '',
+      githubPaths: [],
+      media: [],
+    },
+    {
+      id: 6,
+      title: 'Gear Inspection System — Sona Comstar',
+      desc: '98.3% accuracy across 8 gear categories. Reduced inspection cycle to 10 seconds for 60 images using TensorRT acceleration. Collaborated with hardware and QA teams for real-time constraints.',
+      category: 'cv', status: 'completed',
+      tags: ['TensorRT','Classification','Edge Deployment','Jetson'],
+      github: '', demo: '',
+      githubPaths: [],
+      media: [],
+    },
+    {
+      id: 7,
+      title: 'AgroSmart — AI Crop Optimization App',
+      desc: 'AI-powered mobile app for farmers optimizing crop yields via soil analysis, disease detection, and fertilizer recommendations. Built end-to-end from model training to mobile integration.',
+      category: 'ml', status: 'completed',
+      tags: ['Mobile AI','Disease Detection','Soil Analysis','Deep Learning'],
+      github: '', demo: '',
+      githubPaths: [],
+      media: [],
+    },
+  ],
+  activities: [
+    { id: 1, title: 'Smart India Hackathon 2022', type: 'hackathon', date: '2022-12', org: 'Ministry of Electronics & IT (MeitY)', result: '🥇 1st Place — AI Ready Dataset', link: '' },
+    { id: 2, title: 'UNESCO India-Africa Hackathon', type: 'hackathon', date: '2022-11', org: 'UNESCO / Indian Government', result: '🥈 Runner-Up (International)', link: '' },
+    { id: 3, title: 'Ubiquant Market Prediction', type: 'kaggle', date: '2022-06', org: 'Kaggle', result: '🥈 Silver Medal — 65th Rank Globally', link: '' },
+    { id: 4, title: 'Bengali.AI Speech Recognition', type: 'kaggle', date: '2022-08', org: 'Kaggle', result: '🥉 Bronze Medal', link: '' },
+    { id: 5, title: 'LLM — Detect AI Generated Text', type: 'kaggle', date: '2023-06', org: 'Kaggle', result: '🥉 Bronze Medal', link: '' },
+    { id: 6, title: 'Linking Writing Processes to Quality', type: 'kaggle', date: '2023-09', org: 'Kaggle', result: '🥉 Bronze Medal', link: '' },
+    { id: 7, title: 'Kaggle Expert — 4× with Top 400 Global Rank', type: 'award', date: '2023-01', org: 'Kaggle', result: 'Expert · Under 400th Globally', link: '' },
+    { id: 8, title: 'Geoprocessing GIS using Python', type: 'cert', date: '2022-05', org: 'Indian Institute of Remote Sensing', result: 'Certified', link: '' },
+    { id: 9, title: 'Google Data Analytics Certificate', type: 'cert', date: '2022-03', org: 'Coursera / Google', result: 'Certified', link: '' },
+    { id: 10, title: 'Idea Evaluator — Smart India Hackathon 2024', type: 'award', date: '2024-09', org: 'AICTE / MeitY', result: 'Evaluated 100 ideas', link: '' },
+    { id: 11, title: 'Judge — Galgotias International Hackathon', type: 'award', date: '2024-01', org: 'Galgotias University', result: 'Invited Judge', link: '' },
+    { id: 12, title: 'Idea Evaluator — STATATHON 2025', type: 'award', date: '2025-02', org: 'STATATHON', result: 'Evaluated 200 ideas', link: '' },
+  ],
+  _editProjectId: null,
+  _editActivityId: null,
+  _pendingMedia: [],
+};
+
+/* ─── PERSISTENCE ────────────────────────────────────────────── */
+function save() {
+  try {
+    // Save everything except large media blobs separately
+    const toSave = { ...state };
+    delete toSave._pendingMedia;
+    // Try to save; if quota exceeded, save without media
+    try {
+      localStorage.setItem('vk_portfolio', JSON.stringify(toSave));
+    } catch(e) {
+      const slim = { ...toSave, projects: toSave.projects.map(p => ({...p, media: p.media.map(m => ({...m, data: m.data.length > 200 ? m.data.substring(0,50)+'...' : m.data}))})) };
+      localStorage.setItem('vk_portfolio', JSON.stringify({ ...slim, _mediaQuotaExceeded: true }));
+    }
+  } catch(e) { console.warn('Save failed', e); }
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem('vk_portfolio');
+    if (raw) {
+      const saved = JSON.parse(raw);
+      Object.assign(state, saved);
+      state._pendingMedia = [];
+      state._editProjectId = null;
+      state._editActivityId = null;
+    }
+  } catch(e) { console.warn('Load failed', e); }
+}
+
+/* ─── RENDER PROFILE ─────────────────────────────────────────── */
+function renderProfile() {
+  const p = state.profile;
+  document.getElementById('heroFirstName').textContent  = p.firstName;
+  document.getElementById('heroLastName').textContent   = p.lastName;
+  document.getElementById('heroDesc').textContent       = p.desc;
+  document.getElementById('aboutHeadline').textContent  = p.aboutHeadline;
+  document.getElementById('aboutPara1').textContent     = p.aboutP1;
+  document.getElementById('aboutPara2').innerHTML       = p.aboutP2;
+  document.getElementById('footerName').textContent     = `${p.firstName} ${p.lastName}`;
+  document.getElementById('navName').innerHTML          = `${p.firstName[0]}<span>.</span>${p.lastName}`;
+  document.getElementById('statExp').textContent        = p.exp;
+
+  const chips = document.getElementById('skillsChips');
+  chips.innerHTML = p.skills.map(s => `<span class="chip">${s}</span>`).join('');
+
+  // Photo
+  const img = document.getElementById('aboutPhotoImg');
+  const ph  = document.getElementById('photoPlaceholder');
+  if (p.photo) { img.src = p.photo; img.style.display = 'block'; ph.style.display = 'none'; }
+  else         { img.style.display = 'none'; ph.style.display = 'flex'; }
+
+  startTypewriter(p.role);
+
+  // Stats
+  document.getElementById('statProjects').innerHTML = `${state.projects.length}<span>+</span>`;
+}
+
+/* ─── RENDER CONTACT ─────────────────────────────────────────── */
+function renderContact() {
+  const c = state.contact;
+  const emailEl = document.getElementById('emailLink');
+  emailEl.href = `mailto:${c.email}`;
+  document.getElementById('githubLink').href   = c.github   || '#';
+  document.getElementById('linkedinLink').href = c.linkedin || '#';
+  document.getElementById('kaggleLink').href   = c.kaggle   || '#';
+}
+
+/* ─── TYPEWRITER ─────────────────────────────────────────────── */
+let _twTimeout;
+function startTypewriter(roleStr) {
+  clearTimeout(_twTimeout);
+  const roles = (roleStr || state.profile.role).split('·').map(s => s.trim()).filter(Boolean);
+  let ri = 0, ci = 0, deleting = false;
+  const el = document.getElementById('typeText');
+
+  function tick() {
+    const cur = roles[ri];
+    if (!deleting) {
+      ci++;
+      el.textContent = cur.substring(0, ci);
+      if (ci === cur.length) { deleting = true; _twTimeout = setTimeout(tick, 1800); return; }
+    } else {
+      ci--;
+      el.textContent = cur.substring(0, ci);
+      if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; }
+    }
+    _twTimeout = setTimeout(tick, deleting ? 45 : 75);
+  }
+  tick();
+}
+
+/* ─── RENDER PROJECTS ────────────────────────────────────────── */
+function renderProjects(filter = 'all') {
+  const grid = document.getElementById('projectsGrid');
+  const projects = filter === 'all' ? state.projects : state.projects.filter(p => p.category === filter);
+
+  if (!projects.length) {
+    grid.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6m-6 4h6"/></svg>
+      <p>No projects yet. Click <strong>Add Project</strong> to get started.</p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = projects.map(p => {
+    const firstMedia = p.media && p.media.length ? p.media[0] : null;
+    const firstGhPath = p.githubPaths && p.githubPaths.length ? p.githubPaths[0] : null;
+
+    let mediaHTML;
+    if (firstMedia) {
+      mediaHTML = firstMedia.type === 'video'
+        ? `<video src="${firstMedia.data}" muted loop playsinline autoplay></video>`
+        : `<img src="${firstMedia.data}" alt="${p.title}" loading="lazy">`;
+    } else if (firstGhPath) {
+      const ext = firstGhPath.split('.').pop().toLowerCase();
+      const isVid = ['mp4','webm','ogg'].includes(ext);
+      mediaHTML = isVid
+        ? `<video src="${firstGhPath}" muted loop playsinline autoplay></video>`
+        : `<img src="${firstGhPath}" alt="${p.title}" loading="lazy">`;
+    } else {
+      mediaHTML = `<div class="project-media-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <span>Add media</span>
+      </div>`;
+    }
+
+    // Media strip — show all thumbnails
+    const allMedia = [
+      ...(p.media || []).map((m, i) => ({ src: m.data, type: m.type, isGh: false, idx: i })),
+      ...(p.githubPaths || []).map((gh, i) => {
+        const ext = gh.split('.').pop().toLowerCase();
+        return { src: gh, type: ['mp4','webm','ogg'].includes(ext) ? 'video' : 'image', isGh: true, idx: (p.media||[]).length + i };
+      }),
+    ];
+
+    const stripHTML = allMedia.length > 1 ? `<div class="media-strip">
+      ${allMedia.map((m, si) => `
+        <div class="media-thumb" onclick="openLightbox(${p.id}, ${si}, ${m.isGh})">
+          ${m.type === 'video'
+            ? `<video src="${m.src}" muted playsinline></video>`
+            : `<img src="${m.src}" alt="" loading="lazy">`}
+        </div>`).join('')}
+    </div>` : '';
+
+    const tagClass = { cv: 'cv', ml: 'ml', web: 'web', other: 'other' }[p.category] || '';
+    const tagsHTML = (p.tags || []).map(t => `<span class="tag ${tagClass}">${t}</span>`).join('');
+    const statusColor = p.status === 'active' ? 'var(--success)' : p.status === 'archived' ? 'var(--muted)' : 'var(--cyan)';
+    const statusLabel = { completed: 'Completed', active: 'In Progress', archived: 'Archived' }[p.status] || '';
+
+    return `<div class="project-card" data-id="${p.id}">
+      <div class="project-media">${mediaHTML}</div>
+      <div style="display:flex;flex-direction:column;">
+        <div class="project-body">
+          <div class="project-tags">${tagsHTML}</div>
+          <div class="project-title">${p.title}</div>
+          <div class="project-desc">${p.desc}</div>
+          <div class="project-footer">
+            <div class="project-links">
+              ${p.github ? `<a class="project-link" href="${p.github}" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> GitHub</a>` : ''}
+              ${p.demo ? `<a class="project-link" href="${p.demo}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Live</a>` : ''}
+              <span style="font-size:.72rem;color:${statusColor};font-family:var(--font-mono);">● ${statusLabel}</span>
+            </div>
+            <div class="project-actions">
+              <button class="icon-btn" onclick="openProjectModal(${p.id})" title="Edit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              </button>
+              <button class="icon-btn del" onclick="deleteProject(${p.id})" title="Delete">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18m-2 0l-1.5 14.5a1 1 0 01-1 .5H7.5a1 1 0 01-1-.5L5 6m5 0V4a1 1 0 011-1h2a1 1 0 011 1v2"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        ${stripHTML}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Update stats
+  document.getElementById('statProjects').innerHTML = `${state.projects.length}<span>+</span>`;
+
+  // Update filter tabs
+  const cats = ['all', ...new Set(state.projects.map(p => p.category))];
+  const catLabels = { all: 'All', cv: 'Computer Vision', ml: 'ML / AI', web: 'Web / App', other: 'Other' };
+  document.getElementById('filterTabs').innerHTML = cats.map(c =>
+    `<button class="filter-tab${c === filter ? ' active' : ''}" data-filter="${c}" onclick="renderProjects('${c}')">${catLabels[c]||c}</button>`
+  ).join('');
+}
+
+/* ─── RENDER ACTIVITIES ──────────────────────────────────────── */
+function renderActivities() {
+  const grid = document.getElementById('activitiesGrid');
+  const icons = { hackathon: '⚡', kaggle: '📊', cert: '🎓', award: '🏆', other: '✦' };
+
+  if (!state.activities.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <p>No activities yet. Add hackathons, Kaggle results, certifications…</p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = state.activities.map(a => `
+    <div class="activity-card">
+      <div class="activity-icon ${a.type}">${icons[a.type]||'✦'}</div>
+      <div class="activity-meta">
+        <div class="activity-type">${a.type}</div>
+        <div class="activity-title">${a.title}</div>
+        ${a.org ? `<div class="activity-org">${a.org}</div>` : ''}
+        ${a.result ? `<div class="activity-result">${a.result}</div>` : ''}
+        ${a.date ? `<div class="activity-date">${new Date(a.date+'-01').toLocaleDateString('en-IN',{year:'numeric',month:'short'})}</div>` : ''}
+        ${a.link ? `<a href="${a.link}" target="_blank" style="font-size:.75rem;color:var(--indigo-lt);margin-top:5px;display:inline-block;">↗ View</a>` : ''}
+      </div>
+      <div class="activity-actions">
+        <button class="icon-btn" onclick="openActivityModal(${a.id})" title="Edit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        </button>
+        <button class="icon-btn del" onclick="deleteActivity(${a.id})" title="Delete">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18m-2 0l-1.5 14.5a1 1 0 01-1 .5H7.5a1 1 0 01-1-.5L5 6m5 0V4a1 1 0 011-1h2a1 1 0 011 1v2"/></svg>
+        </button>
+      </div>
+    </div>`).join('');
+}
+
+/* ─── PROJECT MODAL ──────────────────────────────────────────── */
+function openProjectModal(id = null) {
+  state._editProjectId = id;
+  state._pendingMedia = [];
+  document.getElementById('mediaPreviews').innerHTML = '';
+
+  if (id !== null) {
+    const p = state.projects.find(x => x.id === id);
+    document.getElementById('projectModalTitle').textContent = 'Edit Project';
+    document.getElementById('pTitle').value    = p.title;
+    document.getElementById('pDesc').value     = p.desc;
+    document.getElementById('pCategory').value = p.category;
+    document.getElementById('pStatus').value   = p.status;
+    document.getElementById('pGithub').value   = p.github   || '';
+    document.getElementById('pDemo').value     = p.demo     || '';
+    document.getElementById('pTags').value     = (p.tags || []).join(', ');
+    document.getElementById('pGithubPaths').value = (p.githubPaths || []).join('\n');
+    // Pre-load existing media into pending
+    state._pendingMedia = (p.media || []).map(m => ({ ...m }));
+    renderMediaPreviews();
+  } else {
+    document.getElementById('projectModalTitle').textContent = 'New Project';
+    ['pTitle','pDesc','pGithub','pDemo','pTags','pGithubPaths'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('pCategory').value = 'cv';
+    document.getElementById('pStatus').value = 'completed';
+  }
+  openModal('projectModal');
+}
+
+function saveProject() {
+  const title = document.getElementById('pTitle').value.trim();
+  if (!title) { alert('Title is required.'); return; }
+  const ghPaths = document.getElementById('pGithubPaths').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const proj = {
+    id:           state._editProjectId ?? Date.now(),
+    title,
+    desc:         document.getElementById('pDesc').value.trim(),
+    category:     document.getElementById('pCategory').value,
+    status:       document.getElementById('pStatus').value,
+    github:       document.getElementById('pGithub').value.trim(),
+    demo:         document.getElementById('pDemo').value.trim(),
+    tags:         document.getElementById('pTags').value.split(',').map(s=>s.trim()).filter(Boolean),
+    githubPaths:  ghPaths,
+    media:        state._pendingMedia,
+  };
+  if (state._editProjectId !== null) {
+    const idx = state.projects.findIndex(p => p.id === state._editProjectId);
+    state.projects[idx] = proj;
+  } else {
+    state.projects.unshift(proj);
+  }
+  save(); renderProjects(); closeModal('projectModal'); toast('Project saved!');
+}
+
+function deleteProject(id) {
+  if (!confirm('Delete this project?')) return;
+  state.projects = state.projects.filter(p => p.id !== id);
+  save(); renderProjects(); toast('Project deleted');
+}
+
+/* ─── ACTIVITY MODAL ─────────────────────────────────────────── */
+function openActivityModal(id = null) {
+  state._editActivityId = id;
+  if (id !== null) {
+    const a = state.activities.find(x => x.id === id);
+    document.getElementById('activityModalTitle').textContent = 'Edit Activity';
+    document.getElementById('aTitle').value  = a.title;
+    document.getElementById('aType').value   = a.type;
+    document.getElementById('aDate').value   = a.date || '';
+    document.getElementById('aOrg').value    = a.org  || '';
+    document.getElementById('aResult').value = a.result || '';
+    document.getElementById('aLink').value   = a.link  || '';
+  } else {
+    document.getElementById('activityModalTitle').textContent = 'Add Activity';
+    ['aTitle','aDate','aOrg','aResult','aLink'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('aType').value = 'hackathon';
+  }
+  openModal('activityModal');
+}
+
+function saveActivity() {
+  const title = document.getElementById('aTitle').value.trim();
+  if (!title) { alert('Title is required.'); return; }
+  const act = {
+    id:     state._editActivityId ?? Date.now(),
+    title,
+    type:   document.getElementById('aType').value,
+    date:   document.getElementById('aDate').value,
+    org:    document.getElementById('aOrg').value.trim(),
+    result: document.getElementById('aResult').value.trim(),
+    link:   document.getElementById('aLink').value.trim(),
+  };
+  if (state._editActivityId !== null) {
+    const idx = state.activities.findIndex(a => a.id === state._editActivityId);
+    state.activities[idx] = act;
+  } else {
+    state.activities.unshift(act);
+  }
+  save(); renderActivities(); closeModal('activityModal'); toast('Activity saved!');
+}
+
+function deleteActivity(id) {
+  if (!confirm('Delete this activity?')) return;
+  state.activities = state.activities.filter(a => a.id !== id);
+  save(); renderActivities(); toast('Activity deleted');
+}
+
+/* ─── ABOUT MODAL ────────────────────────────────────────────── */
+function openAboutModal() {
+  const p = state.profile;
+  document.getElementById('editFirstName').value      = p.firstName;
+  document.getElementById('editLastName').value       = p.lastName;
+  document.getElementById('editRole').value           = p.role;
+  document.getElementById('editDesc').value           = p.desc;
+  document.getElementById('editAboutHeadline').value  = p.aboutHeadline;
+  document.getElementById('editAboutP1').value        = p.aboutP1;
+  document.getElementById('editAboutP2').value        = p.aboutP2;
+  document.getElementById('editSkills').value         = p.skills.join(', ');
+  document.getElementById('editExp').value            = p.exp;
+  openModal('aboutModal');
+}
+
+function saveAbout() {
+  Object.assign(state.profile, {
+    firstName:     document.getElementById('editFirstName').value.trim() || 'Vipin',
+    lastName:      document.getElementById('editLastName').value.trim(),
+    role:          document.getElementById('editRole').value.trim(),
+    desc:          document.getElementById('editDesc').value.trim(),
+    aboutHeadline: document.getElementById('editAboutHeadline').value.trim(),
+    aboutP1:       document.getElementById('editAboutP1').value.trim(),
+    aboutP2:       document.getElementById('editAboutP2').value.trim(),
+    skills:        document.getElementById('editSkills').value.split(',').map(s=>s.trim()).filter(Boolean),
+    exp:           parseInt(document.getElementById('editExp').value) || 3,
+  });
+  save(); renderProfile(); closeModal('aboutModal'); toast('Profile updated!');
+}
+
+/* ─── CONTACT MODAL ──────────────────────────────────────────── */
+function openContactModal() {
+  document.getElementById('cEmail').value    = state.contact.email;
+  document.getElementById('cGithub').value   = state.contact.github;
+  document.getElementById('cLinkedin').value = state.contact.linkedin;
+  document.getElementById('cKaggle').value   = state.contact.kaggle || '';
+  openModal('contactModal');
+}
+
+function saveContact() {
+  state.contact.email    = document.getElementById('cEmail').value.trim();
+  state.contact.github   = document.getElementById('cGithub').value.trim() || '#';
+  state.contact.linkedin = document.getElementById('cLinkedin').value.trim() || '#';
+  state.contact.kaggle   = document.getElementById('cKaggle').value.trim() || '#';
+  save(); renderContact(); closeModal('contactModal'); toast('Contact updated!');
+}
+
+/* ─── PHOTO UPLOAD ───────────────────────────────────────────── */
+function triggerPhotoUpload() { document.getElementById('photoInput').click(); }
+function handlePhotoUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    state.profile.photo = ev.target.result;
+    save(); renderProfile(); toast('Photo updated!');
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ─── MEDIA HANDLING ─────────────────────────────────────────── */
+function handleMediaSelect(e) { addMediaFiles(Array.from(e.target.files)); }
+function handleMediaDrop(e) {
+  e.preventDefault();
+  document.getElementById('uploadZone').classList.remove('drag');
+  addMediaFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')||f.type.startsWith('video/')));
+}
+
+function addMediaFiles(files) {
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      state._pendingMedia.push({ data: ev.target.result, type: file.type.startsWith('video/') ? 'video' : 'image', name: file.name });
+      renderMediaPreviews();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderMediaPreviews() {
+  document.getElementById('mediaPreviews').innerHTML = state._pendingMedia.map((m,i) => `
+    <div class="media-preview-item">
+      ${m.type==='video'
+        ? `<video src="${m.data}" muted playsinline></video>`
+        : `<img src="${m.data}" alt="${m.name}">`}
+      <button class="media-remove" onclick="removeMedia(${i})">✕</button>
+    </div>`).join('');
+}
+
+function removeMedia(i) {
+  state._pendingMedia.splice(i, 1);
+  renderMediaPreviews();
+}
+
+/* ─── LIGHTBOX ───────────────────────────────────────────────── */
+function openLightbox(projectId, allIdx) {
+  const p = state.projects.find(x => x.id === projectId);
+  if (!p) return;
+
+  const allMedia = [
+    ...(p.media || []).map(m => ({ src: m.data, type: m.type })),
+    ...(p.githubPaths || []).map(gh => {
+      const ext = gh.split('.').pop().toLowerCase();
+      return { src: gh, type: ['mp4','webm','ogg'].includes(ext) ? 'video' : 'image' };
+    }),
+  ];
+
+  const m = allMedia[allIdx];
+  if (!m) return;
+
+  const lb = document.getElementById('lightbox');
+  const content = document.getElementById('lightboxContent');
+  content.innerHTML = m.type === 'video'
+    ? `<video src="${m.src}" controls autoplay style="max-width:90vw;max-height:88vh;border-radius:12px;"></video>`
+    : `<img src="${m.src}" alt="" style="max-width:90vw;max-height:88vh;border-radius:12px;">`;
+  lb.classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lightboxContent').innerHTML = '';
+}
+
+/* ─── MODAL HELPERS ──────────────────────────────────────────── */
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) closeModal(el.id); });
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.querySelectorAll('.modal-overlay.open').forEach(el => closeModal(el.id)); closeLightbox(); } });
+
+/* ─── TOAST ──────────────────────────────────────────────────── */
+function toast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+/* ─── SCROLL SPY ─────────────────────────────────────────────── */
+const sections = ['hero','about','projects','activities','contact'];
+window.addEventListener('scroll', () => {
+  let cur = 'hero';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 120) cur = id;
+  });
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.toggle('active', a.dataset.section === cur));
+}, { passive: true });
+
+/* ─── INIT ───────────────────────────────────────────────────── */
+load();
+renderProfile();
+renderContact();
+renderProjects();
+renderActivities();
+</script>
+</body>
+</html>
