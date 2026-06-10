@@ -539,6 +539,58 @@ footer span { color: var(--indigo-lt); }
 .empty-state svg { width: 48px; height: 48px; margin: 0 auto 16px; opacity: .3; display: block; }
 .empty-state p { font-size: .9rem; }
 
+/* ── ADMIN LOCK ───────────────────────────────────────────── */
+.lock-btn {
+  width: 34px; height: 34px; border-radius: 8px;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); cursor: pointer; transition: all .2s;
+  flex-shrink: 0;
+}
+.lock-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+.lock-btn.unlocked { border-color: var(--cyan); color: var(--cyan); background: rgba(0,212,184,.08); }
+.lock-btn svg { width: 15px; height: 15px; }
+
+/* Hide all edit controls when not admin */
+body:not(.is-admin) .edit-only { display: none !important; }
+
+/* Admin indicator dot on nav */
+.admin-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--cyan); display: none;
+  box-shadow: 0 0 6px var(--cyan);
+}
+body.is-admin .admin-dot { display: inline-block; }
+
+/* Lock modal */
+.lock-modal {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 40px 36px;
+  width: 100%; max-width: 380px;
+  transform: translateY(20px); transition: transform .3s;
+  text-align: center;
+}
+.modal-overlay.open .lock-modal { transform: translateY(0); }
+.lock-modal-icon {
+  width: 56px; height: 56px; border-radius: 16px;
+  background: rgba(91,94,244,.12); border: 1px solid rgba(91,94,244,.25);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px; color: var(--indigo-lt);
+}
+.lock-modal-icon svg { width: 26px; height: 26px; }
+.lock-modal h3 {
+  font-family: var(--font-display); font-size: 1.2rem; font-weight: 700;
+  margin-bottom: 6px;
+}
+.lock-modal p { color: var(--muted); font-size: .85rem; margin-bottom: 22px; }
+.lock-error { color: var(--danger); font-size: .8rem; margin-top: 8px; min-height: 1.2em; }
+.logout-btn {
+  background: transparent; border: 1px solid var(--border); color: var(--muted);
+  padding: 7px 16px; border-radius: var(--radius); font-size: .8rem;
+  transition: all .2s; margin-top: 10px;
+}
+.logout-btn:hover { border-color: var(--danger); color: var(--danger); }
+
 /* ── RESPONSIVE ───────────────────────────────────────────── */
 @media (max-width: 900px) {
   .project-card { grid-template-columns: 1fr; }
@@ -570,6 +622,13 @@ footer span { color: var(--indigo-lt); }
     <a href="#activities" data-section="activities">Activities</a>
     <a href="#contact" data-section="contact">Contact</a>
   </div>
+  <button class="lock-btn" id="lockBtn" onclick="openLockModal()" title="Admin login">
+    <span class="admin-dot"></span>
+    <svg id="lockIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+      <path d="M7 11V7a5 5 0 0110 0v4"/>
+    </svg>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -609,7 +668,7 @@ footer span { color: var(--indigo-lt); }
 <section id="about">
   <div class="about-grid">
     <div class="about-photo-wrap">
-      <div class="about-photo-placeholder" id="photoPlaceholder" onclick="triggerPhotoUpload()">
+      <div class="about-photo-placeholder" id="photoPlaceholder" onclick="isAdmin() && triggerPhotoUpload()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         <span>Click to add photo</span>
       </div>
@@ -649,7 +708,7 @@ footer span { color: var(--indigo-lt); }
           </div>
         </div>
       </div>
-      <div style="margin-top:24px;">
+      <div style="margin-top:24px;" class="edit-only">
         <button class="btn btn-ghost" onclick="openAboutModal()" style="font-size:.82rem; padding:9px 18px;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
           Edit Profile
@@ -670,7 +729,7 @@ footer span { color: var(--indigo-lt); }
       <div class="filter-tabs" id="filterTabs">
         <button class="filter-tab active" data-filter="all">All</button>
       </div>
-      <button class="btn-add" onclick="openProjectModal()">
+      <button class="btn-add edit-only" onclick="openProjectModal()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M12 5v14m-7-7h14"/></svg>
         Add Project
       </button>
@@ -687,7 +746,7 @@ footer span { color: var(--indigo-lt); }
     <p class="section-sub">Hackathons, Kaggle competitions, certifications, and recognition.</p>
   </div>
   <div class="activities-grid" id="activitiesGrid"></div>
-  <button class="btn-add-activity" onclick="openActivityModal()">
+  <button class="btn-add-activity edit-only" onclick="openActivityModal()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="display:inline;vertical-align:middle;margin-right:6px;"><path d="M12 5v14m-7-7h14"/></svg>
     Add Activity
   </button>
@@ -703,20 +762,20 @@ footer span { color: var(--indigo-lt); }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
         Email
       </a>
-      <a class="contact-link" href="https://github.com/" id="githubLink" target="_blank">
+      <a class="contact-link" href="https://github.com/" id="https://github.com/devVipin01" target="_blank">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
         GitHub
       </a>
-      <a class="contact-link" href="https://linkedin.com/" id="linkedinLink" target="_blank">
+      <a class="contact-link" href="https://linkedin.com/" id="https://www.linkedin.com/in/devVipin01" target="_blank">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
         LinkedIn
       </a>
-      <a class="contact-link" href="https://www.kaggle.com/" id="kaggleLink" target="_blank">
+      <a class="contact-link" href="https://www.kaggle.com/" id="https://www.kaggle.com/vipin20" target="_blank">
         <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v4.860c0 .274-.137.412-.411.412H5.5c-.274 0-.411-.138-.411-.412V.588C5.089.196 5.226.059 5.5.059h2.376c.274 0 .411.137.411.529v13.300l6.07-5.893c.162-.162.324-.242.489-.242h3.234c.161 0 .268.054.316.161.049.108.032.222-.054.342l-6.428 6.184 6.749 8.520c.086.121.109.236.162.099z"/></svg>
         Kaggle
       </a>
     </div>
-    <div style="margin-top:20px;">
+    <div style="margin-top:20px;" class="edit-only">
       <button class="btn btn-ghost" onclick="openContactModal()" style="font-size:.8rem; padding:8px 16px;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
         Edit Contact Info
@@ -944,6 +1003,36 @@ footer span { color: var(--indigo-lt); }
     <div class="form-actions">
       <button class="btn-cancel" onclick="closeModal('contactModal')">Cancel</button>
       <button class="btn-save" onclick="saveContact()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── LOCK / AUTH MODAL ───────────────────────────────────────── -->
+<div class="modal-overlay" id="lockModal">
+  <div class="lock-modal">
+    <div class="lock-modal-icon" id="lockModalIcon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0110 0v4"/>
+      </svg>
+    </div>
+    <h3 id="lockModalTitle">Admin Access</h3>
+    <p id="lockModalDesc">Enter your password to enable editing.</p>
+    <div id="lockLoginForm">
+      <input class="form-input" id="adminPassword" type="password" placeholder="Password"
+        onkeydown="if(event.key==='Enter') submitPassword()" autocomplete="current-password" />
+      <div class="lock-error" id="lockError"></div>
+      <div class="form-actions" style="justify-content:center; margin-top:18px;">
+        <button class="btn-cancel" onclick="closeModal('lockModal')">Cancel</button>
+        <button class="btn-save" onclick="submitPassword()">Unlock</button>
+      </div>
+    </div>
+    <div id="lockLogoutForm" style="display:none;">
+      <p style="color:var(--success); font-size:.85rem; margin-bottom:4px;">✓ Admin mode is active</p>
+      <button class="logout-btn" onclick="adminLogout()">Lock & Sign Out</button>
+      <div class="form-actions" style="justify-content:center; margin-top:14px;">
+        <button class="btn-cancel" onclick="closeModal('lockModal')">Close</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1272,7 +1361,7 @@ function renderProjects(filter = 'all') {
               ${p.demo ? `<a class="project-link" href="${p.demo}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Live</a>` : ''}
               <span style="font-size:.72rem;color:${statusColor};font-family:var(--font-mono);">● ${statusLabel}</span>
             </div>
-            <div class="project-actions">
+            <div class="project-actions edit-only">
               <button class="icon-btn" onclick="openProjectModal(${p.id})" title="Edit">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
               </button>
@@ -1322,7 +1411,7 @@ function renderActivities() {
         ${a.date ? `<div class="activity-date">${new Date(a.date+'-01').toLocaleDateString('en-IN',{year:'numeric',month:'short'})}</div>` : ''}
         ${a.link ? `<a href="${a.link}" target="_blank" style="font-size:.75rem;color:var(--indigo-lt);margin-top:5px;display:inline-block;">↗ View</a>` : ''}
       </div>
-      <div class="activity-actions">
+      <div class="activity-actions edit-only">
         <button class="icon-btn" onclick="openActivityModal(${a.id})" title="Edit">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
         </button>
@@ -1589,8 +1678,100 @@ window.addEventListener('scroll', () => {
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.toggle('active', a.dataset.section === cur));
 }, { passive: true });
 
+/* ─── AUTH / ADMIN LOCK ──────────────────────────────────────── */
+// Password is stored as a SHA-256 hash — never in plain text.
+// Default password: vipin@2024  (change it in the Lock modal after first login)
+// To change: log in → click lock icon → "Change Password" (see below)
+
+const ADMIN_PW_KEY  = 'vk_admin_hash';
+const ADMIN_SESSION = 'vk_admin_session';
+
+// SHA-256 helper (Web Crypto — works in all modern browsers)
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+// Set default password hash on first ever load
+async function initAdminPassword() {
+  if (!localStorage.getItem(ADMIN_PW_KEY)) {
+    const h = await sha256('vipin@2024');
+    localStorage.setItem(ADMIN_PW_KEY, h);
+  }
+}
+
+function isAdmin() {
+  return sessionStorage.getItem(ADMIN_SESSION) === '1';
+}
+
+function applyAdminState() {
+  const admin = isAdmin();
+  document.body.classList.toggle('is-admin', admin);
+  const btn = document.getElementById('lockBtn');
+  if (btn) btn.classList.toggle('unlocked', admin);
+  // Swap lock icon to open padlock when admin
+  const icon = document.getElementById('lockIcon');
+  if (icon) {
+    icon.innerHTML = admin
+      ? '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 019.9-1"/>'
+      : '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>';
+  }
+}
+
+function openLockModal() {
+  const form   = document.getElementById('lockLoginForm');
+  const logout = document.getElementById('lockLogoutForm');
+  const err    = document.getElementById('lockError');
+  const pw     = document.getElementById('adminPassword');
+  if (isAdmin()) {
+    form.style.display   = 'none';
+    logout.style.display = 'block';
+  } else {
+    form.style.display   = 'block';
+    logout.style.display = 'none';
+    if (err) err.textContent = '';
+    if (pw)  { pw.value = ''; }
+  }
+  openModal('lockModal');
+  setTimeout(() => { if (!isAdmin() && pw) pw.focus(); }, 300);
+}
+
+async function submitPassword() {
+  const pw  = document.getElementById('adminPassword').value;
+  const err = document.getElementById('lockError');
+  if (!pw) { err.textContent = 'Please enter a password.'; return; }
+
+  const hash    = await sha256(pw);
+  const stored  = localStorage.getItem(ADMIN_PW_KEY);
+
+  if (hash === stored) {
+    sessionStorage.setItem(ADMIN_SESSION, '1');
+    applyAdminState();
+    closeModal('lockModal');
+    toast('Admin mode enabled ✓');
+    // Re-render so edit buttons appear
+    renderProjects();
+    renderActivities();
+  } else {
+    err.textContent = 'Incorrect password. Try again.';
+    document.getElementById('adminPassword').value = '';
+    document.getElementById('adminPassword').focus();
+  }
+}
+
+function adminLogout() {
+  sessionStorage.removeItem(ADMIN_SESSION);
+  applyAdminState();
+  closeModal('lockModal');
+  toast('Logged out');
+  renderProjects();
+  renderActivities();
+}
+
 /* ─── INIT ───────────────────────────────────────────────────── */
+initAdminPassword();   // set default hash on first load
 load();
+applyAdminState();     // restore admin session if tab still open
 renderProfile();
 renderContact();
 renderProjects();
