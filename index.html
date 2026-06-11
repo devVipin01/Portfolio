@@ -1010,30 +1010,11 @@ body.is-admin .admin-dot { display: inline-block; }
 <!-- ── LOCK / AUTH MODAL ───────────────────────────────────────── -->
 <div class="modal-overlay" id="lockModal">
   <div class="lock-modal">
-    <div class="lock-modal-icon" id="lockModalIcon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-        <path d="M7 11V7a5 5 0 0110 0v4"/>
-      </svg>
+    <div class="modal-header" style="margin-bottom:20px;">
+      <span style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono);letter-spacing:.08em;">ADMIN</span>
+      <button class="modal-close" onclick="closeModal('lockModal')">✕</button>
     </div>
-    <h3 id="lockModalTitle">Admin Access</h3>
-    <p id="lockModalDesc">Enter your password to enable editing.</p>
-    <div id="lockLoginForm">
-      <input class="form-input" id="adminPassword" type="password" placeholder="Password"
-        onkeydown="if(event.key==='Enter') submitPassword()" autocomplete="current-password" />
-      <div class="lock-error" id="lockError"></div>
-      <div class="form-actions" style="justify-content:center; margin-top:18px;">
-        <button class="btn-cancel" onclick="closeModal('lockModal')">Cancel</button>
-        <button class="btn-save" onclick="submitPassword()">Unlock</button>
-      </div>
-    </div>
-    <div id="lockLogoutForm" style="display:none;">
-      <p style="color:var(--success); font-size:.85rem; margin-bottom:4px;">✓ Admin mode is active</p>
-      <button class="logout-btn" onclick="adminLogout()">Lock & Sign Out</button>
-      <div class="form-actions" style="justify-content:center; margin-top:14px;">
-        <button class="btn-cancel" onclick="closeModal('lockModal')">Close</button>
-      </div>
-    </div>
+    <div id="lockModalBody" style="text-align:center;"></div>
   </div>
 </div>
 
@@ -1692,99 +1673,265 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 /* ─── AUTH / ADMIN LOCK ──────────────────────────────────────── */
-// Password is stored as a SHA-256 hash — never in plain text.
-// Default password: vipin@2024  (change it in the Lock modal after first login)
-// To change: log in → click lock icon → "Change Password" (see below)
+//
+//  SECURITY MODEL — safe even on a public GitHub repo:
+//
+//  • ZERO credentials exist in this source file.
+//  • The SHA-256 hash of YOUR password lives only in YOUR browser's
+//    localStorage on YOUR device. It is never committed to git.
+//  • Anyone who clones the repo gets a "no password set" state on
+//    their own machine — completely isolated from yours.
+//  • Brute-force is throttled: 3 wrong attempts → 30-second lockout
+//    (doubles each time). A running counter is kept in sessionStorage.
+//  • Session is tab-scoped (sessionStorage) — closing the tab logs out.
+//
+//  FIRST-TIME SETUP (your device only):
+//    1. Open your deployed site.
+//    2. Click the 🔒 icon — it will show "Set Admin Password".
+//    3. Choose a strong password and confirm it. Done.
+//    4. That hash is saved in YOUR localStorage only. Nothing goes to git.
+//
+//  CHANGE PASSWORD:
+//    Log in → click 🔒 → "Change Password" tab.
 
-const ADMIN_PW_KEY  = 'vk_admin_hash';
-const ADMIN_SESSION = 'vk_admin_session';
+const ADMIN_PW_KEY    = 'vk_pw_v2';        // localStorage: SHA-256 hash
+const ADMIN_SESSION   = 'vk_sess_v2';      // sessionStorage: '1' when logged in
+const ADMIN_ATTEMPTS  = 'vk_attempts';     // sessionStorage: failed attempt count
+const ADMIN_LOCKUNTIL = 'vk_lockuntil';    // sessionStorage: epoch ms of lockout end
 
-// SHA-256 helper (Web Crypto — works in all modern browsers)
+// ── SHA-256 (Web Crypto API — no external dependency) ────────
 async function sha256(str) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
-// Set default password hash on first ever load
-async function initAdminPassword() {
-  if (!localStorage.getItem(ADMIN_PW_KEY)) {
-    const h = await sha256('vipin@2024');
-    localStorage.setItem(ADMIN_PW_KEY, h);
+// ── State helpers ─────────────────────────────────────────────
+function isAdmin()        { return sessionStorage.getItem(ADMIN_SESSION) === '1'; }
+function hasPasswordSet() { return !!localStorage.getItem(ADMIN_PW_KEY); }
+
+function getRemainingLockSecs() {
+  const until = parseInt(sessionStorage.getItem(ADMIN_LOCKUNTIL) || '0');
+  const remaining = Math.ceil((until - Date.now()) / 1000);
+  return remaining > 0 ? remaining : 0;
+}
+
+function recordFailedAttempt() {
+  let attempts = parseInt(sessionStorage.getItem(ADMIN_ATTEMPTS) || '0') + 1;
+  sessionStorage.setItem(ADMIN_ATTEMPTS, attempts);
+  if (attempts >= 3) {
+    // Lockout: 30s * 2^(attempts-3), capped at 10 min
+    const secs = Math.min(30 * Math.pow(2, attempts - 3), 600);
+    sessionStorage.setItem(ADMIN_LOCKUNTIL, Date.now() + secs * 1000);
+    return secs;
   }
+  return 0;
 }
 
-function isAdmin() {
-  return sessionStorage.getItem(ADMIN_SESSION) === '1';
+function clearAttempts() {
+  sessionStorage.removeItem(ADMIN_ATTEMPTS);
+  sessionStorage.removeItem(ADMIN_LOCKUNTIL);
 }
 
+// ── UI helpers ────────────────────────────────────────────────
 function applyAdminState() {
   const admin = isAdmin();
   document.body.classList.toggle('is-admin', admin);
-  const btn = document.getElementById('lockBtn');
-  if (btn) btn.classList.toggle('unlocked', admin);
-  // Swap lock icon to open padlock when admin
+  const btn  = document.getElementById('lockBtn');
   const icon = document.getElementById('lockIcon');
-  if (icon) {
-    icon.innerHTML = admin
-      ? '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 019.9-1"/>'
-      : '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>';
-  }
+  if (btn)  btn.classList.toggle('unlocked', admin);
+  if (icon) icon.innerHTML = admin
+    ? '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 019.9-1"/>'
+    : '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>';
 }
 
+// ── Render the lock modal based on current state ──────────────
 function openLockModal() {
-  const form   = document.getElementById('lockLoginForm');
-  const logout = document.getElementById('lockLogoutForm');
-  const err    = document.getElementById('lockError');
-  const pw     = document.getElementById('adminPassword');
-  if (isAdmin()) {
-    form.style.display   = 'none';
-    logout.style.display = 'block';
-  } else {
-    form.style.display   = 'block';
-    logout.style.display = 'none';
-    if (err) err.textContent = '';
-    if (pw)  { pw.value = ''; }
-  }
+  renderLockModal();
   openModal('lockModal');
-  setTimeout(() => { if (!isAdmin() && pw) pw.focus(); }, 300);
+  setTimeout(() => {
+    const pw = document.getElementById('adminPassword');
+    if (pw && !isAdmin() && !getRemainingLockSecs()) pw.focus();
+  }, 320);
 }
 
-async function submitPassword() {
-  const pw  = document.getElementById('adminPassword').value;
-  const err = document.getElementById('lockError');
-  if (!pw) { err.textContent = 'Please enter a password.'; return; }
+function renderLockModal() {
+  const body = document.getElementById('lockModalBody');
+  if (!body) return;
 
-  const hash    = await sha256(pw);
-  const stored  = localStorage.getItem(ADMIN_PW_KEY);
+  // ── Logged-in view ────────────────────────────────────────
+  if (isAdmin()) {
+    body.innerHTML = `
+      <div class="lock-modal-icon" style="background:rgba(0,212,184,.1);border-color:rgba(0,212,184,.25);color:var(--cyan);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 019.9-1"/>
+        </svg>
+      </div>
+      <h3>Admin Mode Active</h3>
+      <p style="color:var(--success);font-size:.85rem;margin-bottom:20px;">✓ You are logged in. All editing controls are visible.</p>
+
+      <div style="border-top:1px solid var(--border);padding-top:20px;margin-top:4px;">
+        <p style="font-size:.82rem;color:var(--muted);margin-bottom:14px;text-align:left;font-weight:600;letter-spacing:.05em;text-transform:uppercase;">Change Password</p>
+        <input class="form-input" id="newPw1" type="password" placeholder="New password" style="margin-bottom:10px;" autocomplete="new-password"/>
+        <input class="form-input" id="newPw2" type="password" placeholder="Confirm new password" autocomplete="new-password"/>
+        <div class="lock-error" id="changePwError"></div>
+        <button class="btn-save" onclick="changePassword()" style="width:100%;margin-top:14px;">Update Password</button>
+      </div>
+
+      <button class="logout-btn" onclick="adminLogout()" style="width:100%;margin-top:12px;">
+        🔒 Lock &amp; Sign Out
+      </button>`;
+    return;
+  }
+
+  // ── Lockout view ──────────────────────────────────────────
+  const lockSecs = getRemainingLockSecs();
+  if (lockSecs > 0) {
+    body.innerHTML = `
+      <div class="lock-modal-icon" style="background:rgba(244,63,94,.08);border-color:rgba(244,63,94,.2);color:var(--danger);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+      <h3>Too Many Attempts</h3>
+      <p style="color:var(--muted);font-size:.85rem;margin-bottom:16px;">Access locked. Try again in <span id="lockCountdown" style="color:var(--danger);font-weight:700;">${lockSecs}s</span>.</p>`;
+    startCountdown();
+    return;
+  }
+
+  // ── First-time setup view ─────────────────────────────────
+  if (!hasPasswordSet()) {
+    body.innerHTML = `
+      <div class="lock-modal-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26">
+          <circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>
+        </svg>
+      </div>
+      <h3>Set Admin Password</h3>
+      <p>No password has been set on this device yet.<br/>Choose one now — it stays <strong>only in your browser</strong>, never in the code.</p>
+      <input class="form-input" id="setupPw1" type="password" placeholder="Choose a strong password" style="margin-bottom:10px;" autocomplete="new-password"/>
+      <input class="form-input" id="setupPw2" type="password" placeholder="Confirm password" autocomplete="new-password"
+        onkeydown="if(event.key==='Enter') setupPassword()"/>
+      <div class="lock-error" id="setupError"></div>
+      <div class="form-actions" style="justify-content:center;margin-top:18px;">
+        <button class="btn-cancel" onclick="closeModal('lockModal')">Cancel</button>
+        <button class="btn-save" onclick="setupPassword()">Set Password</button>
+      </div>`;
+    setTimeout(() => document.getElementById('setupPw1')?.focus(), 320);
+    return;
+  }
+
+  // ── Normal login view ─────────────────────────────────────
+  const attempts = parseInt(sessionStorage.getItem(ADMIN_ATTEMPTS) || '0');
+  const remaining = 3 - attempts;
+  body.innerHTML = `
+    <div class="lock-modal-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0110 0v4"/>
+      </svg>
+    </div>
+    <h3>Admin Access</h3>
+    <p>Enter your password to enable editing.</p>
+    <input class="form-input" id="adminPassword" type="password" placeholder="Password"
+      onkeydown="if(event.key==='Enter') submitPassword()" autocomplete="current-password"/>
+    ${attempts > 0 ? `<div style="font-size:.76rem;color:var(--amber);margin-top:6px;">⚠ ${remaining} attempt${remaining===1?'':'s'} remaining before lockout</div>` : ''}
+    <div class="lock-error" id="lockError"></div>
+    <div class="form-actions" style="justify-content:center;margin-top:18px;">
+      <button class="btn-cancel" onclick="closeModal('lockModal')">Cancel</button>
+      <button class="btn-save" onclick="submitPassword()">Unlock</button>
+    </div>`;
+}
+
+// ── Countdown timer for lockout ───────────────────────────────
+function startCountdown() {
+  const el = document.getElementById('lockCountdown');
+  if (!el) return;
+  const iv = setInterval(() => {
+    const s = getRemainingLockSecs();
+    if (!el.isConnected) { clearInterval(iv); return; }
+    if (s <= 0) { clearInterval(iv); renderLockModal(); return; }
+    el.textContent = s + 's';
+  }, 1000);
+}
+
+// ── First-time password setup ─────────────────────────────────
+async function setupPassword() {
+  const p1  = document.getElementById('setupPw1')?.value || '';
+  const p2  = document.getElementById('setupPw2')?.value || '';
+  const err = document.getElementById('setupError');
+  if (p1.length < 8) { err.textContent = 'Password must be at least 8 characters.'; return; }
+  if (p1 !== p2)     { err.textContent = 'Passwords do not match.'; return; }
+  const hash = await sha256(p1);
+  localStorage.setItem(ADMIN_PW_KEY, hash);
+  sessionStorage.setItem(ADMIN_SESSION, '1');
+  clearAttempts();
+  applyAdminState();
+  closeModal('lockModal');
+  toast('Password set! Admin mode enabled ✓');
+  renderProjects(); renderActivities();
+}
+
+// ── Login ─────────────────────────────────────────────────────
+async function submitPassword() {
+  if (getRemainingLockSecs() > 0) return;
+  const pwEl = document.getElementById('adminPassword');
+  const err  = document.getElementById('lockError');
+  const pw   = pwEl?.value || '';
+  if (!pw) { if(err) err.textContent = 'Please enter your password.'; return; }
+
+  const hash   = await sha256(pw);
+  const stored = localStorage.getItem(ADMIN_PW_KEY);
 
   if (hash === stored) {
+    clearAttempts();
     sessionStorage.setItem(ADMIN_SESSION, '1');
     applyAdminState();
     closeModal('lockModal');
     toast('Admin mode enabled ✓');
-    // Re-render so edit buttons appear
-    renderProjects();
-    renderActivities();
+    renderProjects(); renderActivities();
   } else {
-    err.textContent = 'Incorrect password. Try again.';
-    document.getElementById('adminPassword').value = '';
-    document.getElementById('adminPassword').focus();
+    const lockSecs = recordFailedAttempt();
+    if (pwEl) pwEl.value = '';
+    if (lockSecs > 0) {
+      renderLockModal(); // show lockout screen
+    } else {
+      const attempts  = parseInt(sessionStorage.getItem(ADMIN_ATTEMPTS) || '0');
+      const remaining = 3 - attempts;
+      if (err) err.textContent = `Incorrect password. ${remaining} attempt${remaining===1?'':'s'} left.`;
+      setTimeout(() => pwEl?.focus(), 50);
+    }
   }
 }
 
+// ── Change password (while logged in) ────────────────────────
+async function changePassword() {
+  const p1  = document.getElementById('newPw1')?.value || '';
+  const p2  = document.getElementById('newPw2')?.value || '';
+  const err = document.getElementById('changePwError');
+  if (!isAdmin()) return;
+  if (p1.length < 8) { err.textContent = 'Minimum 8 characters.'; return; }
+  if (p1 !== p2)     { err.textContent = 'Passwords do not match.'; return; }
+  const hash = await sha256(p1);
+  localStorage.setItem(ADMIN_PW_KEY, hash);
+  err.textContent = '';
+  err.style.color = 'var(--success)';
+  err.textContent = '✓ Password updated successfully.';
+  setTimeout(() => { if(err) { err.textContent=''; err.style.color=''; } }, 3000);
+}
+
+// ── Logout ────────────────────────────────────────────────────
 function adminLogout() {
   sessionStorage.removeItem(ADMIN_SESSION);
   applyAdminState();
   closeModal('lockModal');
-  toast('Logged out');
-  renderProjects();
-  renderActivities();
+  toast('Locked');
+  renderProjects(); renderActivities();
 }
 
 /* ─── INIT ───────────────────────────────────────────────────── */
-initAdminPassword();   // set default hash on first load
 load();
-applyAdminState();     // restore admin session if tab still open
+applyAdminState();   // restore tab session if still open
 renderProfile();
 renderContact();
 renderProjects();
