@@ -1,0 +1,223 @@
+{
+  "profile": {
+    "firstName": "Vipin",
+    "lastName": "Kumar",
+    "role": "Lead CV Engineer \u00b7 AI Systems",
+    "desc": "Lead CV Engineer building production-grade AI inspection systems. From real-time CCTV monitoring to X-ray defect detection \u2014 turning industrial challenges into intelligent solutions.",
+    "aboutHeadline": "Lead Computer Vision & AI Engineer",
+    "aboutP1": "I build end-to-end AI vision systems for industrial quality control \u2014 from architecture design to edge deployment. My systems run 24/7 on production floors at companies like Denso, Lenskart, and Indian Oil.",
+    "aboutP2Prefix": "Currently leading CV engineering at ",
+    "aboutFocusCompany": "Add Innovations",
+    "aboutP2Suffix": ", specializing in anomaly detection, defect segmentation, real-time OCR, and TensorRT-optimized inference pipelines on Nvidia Jetson hardware.",
+    "skills": [
+      "Python",
+      "PyTorch",
+      "YOLOv8",
+      "TensorRT",
+      "OpenCV",
+      "FastAPI",
+      "PaddleOCR",
+      "Nvidia Jetson",
+      "FLIR / Baumer",
+      "SQL",
+      "TensorFlow",
+      "Keras"
+    ],
+    "exp": 3
+  },
+  "contact": {
+    "email": "748vipinkumar@gmail.com",
+    "github": "https://github.com/devVipin01",
+    "linkedin": "https://linkedin.com/in/devVipin01/",
+    "kaggle": "https://kaggle.com/vipin20"
+  },
+  "projects": [
+    {
+      "id": 1,
+      "title": "Real-Time AI Safety Monitoring \u2014 Denso",
+      "desc": "Deployed a live monitoring system processing 5 CCTV feeds simultaneously, detecting human presence and rule violations with 99.13% accuracy at 10 FPS. Integrated alarm triggering and rule-based violation logic.",
+      "category": "cv",
+      "status": "completed",
+      "tags": ["YOLOv8", "OpenCV", "FastAPI", "CCTV", "Real-Time"],
+      "github": "",
+      "demo": "",
+      "githubPaths": []
+    },
+    {
+      "id": 2,
+      "title": "Fabric Anomaly Detection \u2014 YKK Tape Inspection",
+      "desc": "High-performance anomaly detection for fabric quality inspection achieving 99% accuracy. Outperformed PaDiM and PatchCore baselines in both accuracy and inference speed using model quantization.",
+      "category": "cv",
+      "status": "completed",
+      "tags": ["Anomaly Detection", "TensorRT", "Model Quantization", "PatchCore"],
+      "github": "",
+      "demo": "",
+      "githubPaths": []
+    },
+    {
+      "id": 3,
+      "title": "Automated Eyewear Inspection \u2014 Lenskart",
+      "desc": "Combined YOLOv8 + PaddleOCR for curved/irregular text recognition on eyewear frames. Included OpenCV symmetry checks for temples & rims and deep learning\u2013based dent detection.",
+      "category": "cv",
+      "status": "completed",
+      "tags": ["YOLOv8", "PaddleOCR", "OpenCV", "Deep Learning"],
+      "github": "",
+      "demo": "",
+      "githubPaths": []
+    },
+    {
+      "id": 4,
+      "title": "X-Ray Defect Pipeline \u2014 Munitions India Limited",
+      "desc": "Multi-defect segmentation and measurement on noisy X-ray imagery. Includes defect size measurement and OCR-based serial number extraction for military-grade inspection.",
+      "category": "cv",
+      "status": "completed",
+      "tags": ["Segmentation", "OCR", "X-Ray", "Defect Detection"],
+      "github": "",
+      "demo": "",
+      "githubPaths": []
+    },
+    {
+      "id": 5,
+      "title": "Tare Weight Detection \u2014 Indian Oil",
+      "desc": "Two-stage multi-model OCR pipeline for reading tare weight from cylinders, robust to rotation, dirt, and damaged paint. Achieved 98.2% accuracy in field conditions.",
+      "category": "cv",
+      "status": "completed",
+      "tags": ["OCR", "TensorRT", "Multi-Model", "Industrial"],
+      "github": "",
+      "demo": "",
+      "githubPaths": []
+    },
+    {
+      "id": 6,
+      "title": "Gear Inspection System \u2014 Sona Comstar",
+      "desc": "98.3% accuracy across 8 gear categories. Reduced inspection cycle to 10 seconds for 60 images using TensorRT acceleration. Collaborated with hardware and QA teams for real-time constraints.",
+      "category": "cv",
+      "status": "completed",
+      "tags": ["TensorRT", "Classification", "Edge Deployment", "Jetson"],
+      "github": "",
+      "demo": "",
+      "githubPaths": []
+    },
+    {
+      "id": 7,
+      "title": "AgroSmart \u2014 AI Crop Optimization App",
+      "desc": "AI-powered mobile app for farmers optimizing crop yields via soil analysis, disease detection, and fertilizer recommendations. Built end-to-end from model training to mobile integration.",
+      "category": "ml",
+      "status": "completed",
+      "tags": ["Mobile AI", "Disease Detection", "Soil Analysis", "Deep Learning"],
+      "github": "",
+      "demo": "",
+      "githubPaths": []
+    }
+  ],
+  "activities": [
+    {
+      "id": 1,
+      "title": "Smart India Hackathon 2022",
+      "type": "hackathon",
+      "date": "2022-12",
+      "org": "Ministry of Electronics & IT (MeitY)",
+      "result": "1st Place \u2014 AI Ready Dataset",
+      "link": ""
+    },
+    {
+      "id": 2,
+      "title": "UNESCO India-Africa Hackathon",
+      "type": "hackathon",
+      "date": "2022-11",
+      "org": "UNESCO / Indian Government",
+      "result": "Runner-Up (International)",
+      "link": ""
+    },
+    {
+      "id": 3,
+      "title": "Ubiquant Market Prediction",
+      "type": "kaggle",
+      "date": "2022-06",
+      "org": "Kaggle",
+      "result": "Silver Medal \u2014 65th Rank Globally",
+      "link": ""
+    },
+    {
+      "id": 4,
+      "title": "Bengali.AI Speech Recognition",
+      "type": "kaggle",
+      "date": "2022-08",
+      "org": "Kaggle",
+      "result": "Bronze Medal",
+      "link": ""
+    },
+    {
+      "id": 5,
+      "title": "LLM \u2014 Detect AI Generated Text",
+      "type": "kaggle",
+      "date": "2023-06",
+      "org": "Kaggle",
+      "result": "Bronze Medal",
+      "link": ""
+    },
+    {
+      "id": 6,
+      "title": "Linking Writing Processes to Quality",
+      "type": "kaggle",
+      "date": "2023-09",
+      "org": "Kaggle",
+      "result": "Bronze Medal",
+      "link": ""
+    },
+    {
+      "id": 7,
+      "title": "Kaggle Expert \u2014 4\u00d7 with Top 400 Global Rank",
+      "type": "award",
+      "date": "2023-01",
+      "org": "Kaggle",
+      "result": "Expert \u00b7 Under 400th Globally",
+      "link": ""
+    },
+    {
+      "id": 8,
+      "title": "Geoprocessing GIS using Python",
+      "type": "cert",
+      "date": "2022-05",
+      "org": "Indian Institute of Remote Sensing",
+      "result": "Certified",
+      "link": ""
+    },
+    {
+      "id": 9,
+      "title": "Google Data Analytics Certificate",
+      "type": "cert",
+      "date": "2022-03",
+      "org": "Coursera / Google",
+      "result": "Certified",
+      "link": ""
+    },
+    {
+      "id": 10,
+      "title": "Idea Evaluator \u2014 Smart India Hackathon 2024",
+      "type": "award",
+      "date": "2024-09",
+      "org": "AICTE / MeitY",
+      "result": "Evaluated 100 ideas",
+      "link": ""
+    },
+    {
+      "id": 11,
+      "title": "Judge \u2014 Galgotias International Hackathon",
+      "type": "award",
+      "date": "2024-01",
+      "org": "Galgotias University",
+      "result": "Invited Judge",
+      "link": ""
+    },
+    {
+      "id": 12,
+      "title": "Idea Evaluator \u2014 STATATHON 2025",
+      "type": "award",
+      "date": "2025-02",
+      "org": "STATATHON",
+      "result": "Evaluated 200 ideas",
+      "link": ""
+    }
+  ]
+}
