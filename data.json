@@ -33,6 +33,36 @@
   },
   "projects": [
     {
+      "id": 1781250095436,
+      "title": "Fruit Grading & Classification Platform",
+      "desc": "Built an end-to-end GUI-based fruit classification platform supporting dataset management, custom category creation, model training, ONNX/OpenVINO export, and real-time inference visualization.",
+      "category": "cv",
+      "status": "completed",
+      "github": "",
+      "demo": "",
+      "tags": [
+        "classification",
+        "AutoAI",
+        "Fastapi"
+      ],
+      "githubPaths": []
+    },
+    {
+      "id": 1781250003084,
+      "title": "YKK Button Defect Inspection System",
+      "desc": "Developed optimized defect segmentation and measurement system for YKK buttons, processing 1,000+ images/minute with robust performance under varying lighting conditions.",
+      "category": "cv",
+      "status": "completed",
+      "github": "",
+      "demo": "",
+      "tags": [
+        "segmentation",
+        "measurement",
+        "Quantization"
+      ],
+      "githubPaths": []
+    },
+    {
       "id": 1,
       "title": "Real-Time AI Safety Monitoring — Denso",
       "desc": "Deployed a live monitoring system processing 5 CCTV feeds simultaneously, detecting human presence and rule violations tracking with 99.13% accuracy at 10 FPS. Integrated alarm triggering and rule-based violation logic.",
